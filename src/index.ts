@@ -1,25 +1,16 @@
-import { nanoid } from 'nanoid';
-import { getBestMatch, getFitness, getNextGen } from './util';
+import { getBestMatch, mapWithFitness } from './fitness';
+import { getFirstGeneration, getNextGen } from './generation';
 
-const word = 'ciao';
+const word = 'ciao mondo';
 
 const pop = 100;
 
-const getRandomWord = (word: string) => nanoid().substring(0, word.length);
-
-const initGen = [...Array(pop).keys()].map(() => getRandomWord(word));
-
-// calcola il fitness
-const mapWithFitness = (val: string) => ({
-  val,
-  fitness: getFitness(val, word),
-  id: nanoid()
-});
+const initGen = getFirstGeneration(pop, word);
 
 let bestMatch: string | undefined = '';
-let currentPop = initGen.map(mapWithFitness);
+let currentPop = initGen;
 
-let epocEnd = 0;
+let epochEnd = 0;
 
 do {
   const bestMatchParent = getBestMatch(currentPop);
@@ -29,11 +20,11 @@ do {
     console.log('BEST MATCH FITNESS: ', bestMatchParent.fitness);
   }
   currentPop = getNextGen(currentPop, pop, word, mapWithFitness);
-  epocEnd++;
+  epochEnd++;
 } while (bestMatch !== word);
 
 console.log('*******************');
 console.log('*******************');
-console.log(`WORD ${word} found at epoc ${epocEnd}`);
+console.log(`WORD ${word} found at epoch ${epochEnd}`);
 console.log('*******************');
 console.log('*******************');
