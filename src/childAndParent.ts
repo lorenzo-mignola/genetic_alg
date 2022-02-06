@@ -12,8 +12,8 @@ const generateChildFromParent = (
 
 const getParent = (population: Item[], iteration?: number): any => {
   const candidate = population[Math.floor(Math.random() * population.length)];
-  // if after 300 keep the actual candidate (prevent max call)
-  if (iteration && iteration > 300) {
+  // after 500 iteration keep the actual candidate (prevent max call)
+  if (iteration && iteration > 500 && candidate) {
     return candidate;
   }
 
@@ -22,8 +22,10 @@ const getParent = (population: Item[], iteration?: number): any => {
   }
 
   if (!iteration) {
+    // eslint-disable-next-line no-param-reassign
     iteration = 0;
   }
+  // eslint-disable-next-line no-param-reassign
   iteration++;
   return getParent(population, iteration);
 };
